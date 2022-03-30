@@ -5,24 +5,42 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Player;
 
-public class TimeHandler {
+public class TimeHandler{
 
     private Boolean voteActive = false;
     private int yesVote;
     private int noVote;
     private int voteThreshold;
     private World world;
+    BossBar progressbar = Bukkit.createBossBar("VoteProgress", BarColor.BLUE, BarStyle.SEGMENTED_10);
+
+    public World getWorld() {
+        return this.world;
+    }
 
     public void playerVoted(Boolean vote, World world){
         if(!voteActive){
             startVote();
             this.world = world;
             yesVote++;
+
+            //Add Progressbar
+            for(Player people: Bukkit.getOnlinePlayers()){  //Loops threw all player
+                if(people.getWorld() == world){             //Checks if they are in the same world as the vote
+                    progressbar.addPlayer(people);          //Adds them to the progressbar
+                }
+            }
+            progressbar.setVisible(true);                   //makes the progressbar vissible
+
             checkVote();
         }else{
-            yesVote++;
-            checkVote();
+                yesVote++;
+                checkVote();
         }
     }
 
@@ -30,6 +48,9 @@ public class TimeHandler {
         if(yesVote >= voteThreshold){
             world.setTime(0);
             resetVote();
+        }else{
+            progressbar.setProgress(yesVote / voteThreshold);
+            progressbar.setTitle("Yes: " + yesVote + " No: " + noVote);
         }
     }
 
@@ -38,6 +59,7 @@ public class TimeHandler {
         yesVote = 0;
         noVote = 0;
         voteThreshold = 0;
+        progressbar.setVisible(false);
     }
 
     private void startVote(){
@@ -45,11 +67,9 @@ public class TimeHandler {
         int onlinePlayer = Bukkit.getOnlinePlayers().size();
         System.out.println(onlinePlayer);
 
-        voteThreshold = onlinePlayer / 2;
+        voteThreshold = (int) (onlinePlayer / 2f);
 
         Bukkit.broadcastMessage("A Vote has been started!");
-        Bukkit.broadcastMessage("Vote yes by typing in chat /voteday");
-        Bukkit.broadcastMessage(yesVote + "have voted yes. We need " + voteThreshold + "votes.");
     }
 
     public Boolean getVoteActive() {
