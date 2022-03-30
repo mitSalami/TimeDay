@@ -5,3 +5,8 @@ api-version: 1.18
 prefix: TimeDay
 authors: [ mitSalami ]
 description: Let's the player vote to change the Time of Day and the weather
+commands:
+  voteDay:
+    description: either starts a vote or vote for it
+    usage: /voteDay
+    permission: timeday.vote.day
