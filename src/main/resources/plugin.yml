@@ -10,3 +10,7 @@ commands:
     description: either starts a vote or vote for it
     usage: /voteDay
     permission: timeday.vote.day
+  vote:
+      description: Let's you vote in a vote.
+      usage: /<command> [yes|no]
+      permission: timeday.vote.vote
