@@ -1,0 +1,7 @@
+name: TimeDay
+version: '${project.version}'
+main: com.mitsalami.timeday.TimeDay
+api-version: 1.18
+prefix: TimeDay
+authors: [ mitSalami ]
+description: Let's the player vote to change the Time of Day and the weather
