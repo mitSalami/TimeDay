@@ -1,0 +1,9 @@
+timeDay: 300
+voteStartMessage: 'A vote to change the time has been started.'
+voteSuccessfulMessage: 'Vote successful! Changing time...'
+voteInOtherWorld: 'There is already a vote going on in another world!'
+noVoteActive: 'No active vote.'
+
+#ProgressBar:
+progressBarEnabled: true
+progressBarTitle: 'Vote Progress'
