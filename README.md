@@ -8,7 +8,10 @@
 ## Usage
 
 ```sh
-Players can start a vote with the /voteday command. /n Other people can then vote yes by using the /vote [yes|no] command. /n The threshold that the vote is successful is half the players. This will be changed in later version so that it's customizable.
+Players can start a vote with the /voteday command.  
+Other people can then vote yes by using the /vote [yes|no] command.  
+The threshold that the vote is successful is half the players.  
+This will be changed in later version so that it's customizable.
 ```
 
 ## Author
