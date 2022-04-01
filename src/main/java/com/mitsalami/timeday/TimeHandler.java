@@ -99,11 +99,13 @@ public class TimeHandler {
 
     private void startVote() {
         voteActive = true;
-        int onlinePlayer = Bukkit.getOnlinePlayers().size();        //TODO Remove after Debugging
-        System.out.println(onlinePlayer);
+        int onlinePlayer = Bukkit.getOnlinePlayers().size();
 
-        voteThreshold = onlinePlayer / 2f;
-
+        if(onlinePlayer > 2 || onlinePlayer == 1) {
+            voteThreshold = onlinePlayer / 2f;
+        }else{
+            voteThreshold = 2;          //when 2 players are online both have to vote yes.
+        }
         for (Player people : Bukkit.getOnlinePlayers()) {
             if (people.getWorld().equals(world)) {
                 people.sendMessage(voteStartMessage);
