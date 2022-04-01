@@ -1,5 +1,6 @@
 timeDay: 300
 voteStartMessage: 'A vote to change the time has been started.'
+voteStartMessage2: 'Use /vote [yes|no] to vote.'
 voteSuccessfulMessage: 'Vote successful! Changing time...'
 voteInOtherWorld: 'There is already a vote going on in another world!'
 noVoteActive: 'No active vote.'

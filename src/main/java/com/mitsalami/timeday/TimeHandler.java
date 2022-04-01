@@ -1,5 +1,6 @@
 package com.mitsalami.timeday;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
@@ -7,6 +8,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
 import java.util.HashSet;
 
 public class TimeHandler {
@@ -14,6 +16,7 @@ public class TimeHandler {
     //Get Variables from config
     Integer timeDay = TimeDay.getPlugin().getConfig().getInt("timeDay");
     String voteStartMessage = TimeDay.getPlugin().getConfig().getString("voteStartMessage");
+    String voteStartMessage2 = TimeDay.getPlugin().getConfig().getString("voteStartMessage2");
     String voteSuccessfulMessage = TimeDay.getPlugin().getConfig().getString("voteSuccessfulMessage");
     Boolean progressBarEnabled = TimeDay.getPlugin().getConfig().getBoolean("progressBarEnabled");
 
@@ -109,6 +112,8 @@ public class TimeHandler {
         for (Player people : Bukkit.getOnlinePlayers()) {
             if (people.getWorld().equals(world)) {
                 people.sendMessage(voteStartMessage);
+                people.sendMessage(voteStartMessage2);
+
             }
         }
     }
