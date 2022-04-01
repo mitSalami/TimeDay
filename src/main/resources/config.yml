@@ -1,10 +1,19 @@
+#Config for TimeDay
+#Don't change anything if you don't know what you're doing. Like me xD
+
+#time that's set when a voteday is successful
 timeDay: 300
+
+#ProgressBar:
+progressBarEnabled: true
+progressBarTitle: 'Vote Progress'
+
+#All the messages send to the player
+#Change them here if you want to translate everything.
 voteStartMessage: 'A vote to change the time has been started.'
 voteStartMessage2: 'Use /vote [yes|no] to vote.'
 voteSuccessfulMessage: 'Vote successful! Changing time...'
 voteInOtherWorld: 'There is already a vote going on in another world!'
 noVoteActive: 'No active vote.'
 
-#ProgressBar:
-progressBarEnabled: true
-progressBarTitle: 'Vote Progress'
+
