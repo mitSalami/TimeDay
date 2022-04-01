@@ -1,5 +1,6 @@
 package com.mitsalami.timeday.commands;
 
+import com.mitsalami.timeday.TimeDay;
 import com.mitsalami.timeday.TimeHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,26 +8,40 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class VoteCommand extends TimeHandler implements CommandExecutor {
+
+    private String noVoteActive = TimeDay.getPlugin().getConfig().getString("noVoteActive");
+    private TimeHandler timeHandler;
+
+    public VoteCommand(TimeHandler timeHandler) {
+        this.timeHandler = timeHandler;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player){
 
-            if(!getVoteActive()){
-                player.sendMessage("No Vote active!");
+            if(!timeHandler.getVoteActive()){
+                player.sendMessage(noVoteActive);
                 return true;
             }
 
-            if(!playerVotes.contains(player)){
-                playerVotes.add(player);
+            if(!timeHandler.playerVotes.contains(player)){
+                timeHandler.playerVotes.add(player);
             }else{return false;}
+
+            if(args.length <= 0){   //check if there are any arguments
+                return false;
+            }
             if (args[0].equalsIgnoreCase("yes")) {
-                playerVote(player, player.getWorld(), true);
-                playerVotes.add(player);
+                timeHandler.playerVote(player, player.getWorld(), true);
+                timeHandler.playerVotes.add(player);
+                return true;
+            }else if(args[0].equalsIgnoreCase("no")){
+                timeHandler.playerVote(player, player.getWorld(), true);
+                timeHandler.playerVotes.add(player);
                 return true;
             }else{
-                playerVote(player, player.getWorld(), false);
-                playerVotes.add(player);
-                return true;
+                return false;
             }
         }
         return false;

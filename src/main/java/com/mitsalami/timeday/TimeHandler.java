@@ -7,61 +7,76 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
-public class TimeHandler{
+public class TimeHandler {
+
+    //Get Variables from config
+    Integer timeDay = TimeDay.getPlugin().getConfig().getInt("timeDay");
+    String voteStartMessage = TimeDay.getPlugin().getConfig().getString("voteStartMessage");
+    String voteSuccessfulMessage = TimeDay.getPlugin().getConfig().getString("voteSuccessfulMessage");
+    Boolean progressBarEnabled = TimeDay.getPlugin().getConfig().getBoolean("progressBarEnabled");
 
     private Boolean voteActive = false;
     private int yesVote;
     private int noVote;
-    private int voteThreshold;
-    protected HashSet<Player> playerVotes;
+    private float voteThreshold;
+    public HashSet<Player> playerVotes = new HashSet<Player>();
     private World world;
-    BossBar progressbar = Bukkit.createBossBar("VoteProgress", BarColor.BLUE, BarStyle.SEGMENTED_10);
+     BossBar progressbar = Bukkit.createBossBar("VoteProgress", BarColor.BLUE, BarStyle.SEGMENTED_10);
 
     public World getWorld() {
         return this.world;
     }
 
-    public void playerStartedVote(Boolean vote, World world){
-        if(!voteActive){
+    public void playerStartedVote(Boolean vote, World world, Player p) {
+        if (!voteActive) {
             startVote();
             this.world = world;
             yesVote++;
 
             //Add Progressbar
-            for(Player people: Bukkit.getOnlinePlayers()){  //Loops threw all player
-                if(people.getWorld() == world){             //Checks if they are in the same world as the vote
+            for (Player people : Bukkit.getOnlinePlayers()) {  //Loops threw all player
+                if (people.getWorld() == world) {             //Checks if they are in the same world as the vote
                     progressbar.addPlayer(people);          //Adds them to the progressbar
                 }
             }
-            progressbar.setVisible(true);                   //makes the progressbar vissible
-
+            if (progressBarEnabled) {
+                progressbar.setVisible(true);                   //makes the progressbar visible
+            }
+            playerVotes.add(p);
             checkVote();
-        }else{
-                yesVote++;
-                checkVote();
+        } else {
+            this.world = world;
+            yesVote++;
+            checkVote();
         }
     }
 
-    public void playerVote(Player p, World w, boolean v){
-        if(w.equals(world)){
-            if(v){
+    public void playerVote(Player p, World w, boolean v) {
+        if (w.equals(world)) {
+            if (v) {
+                this.world = w;
                 yesVote++;
                 checkVote();
-            }else{
+            } else {
+                this.world = w;
                 noVote++;
                 checkVote();
             }
         }
     }
 
-    private void checkVote() {
-        if(yesVote >= voteThreshold){
-            world.setTime(0);
+    private void checkVote() {          //function to check if the vote is successful
+        if (yesVote >= voteThreshold) {
+            for (Player people : Bukkit.getOnlinePlayers()) {
+                if (people.getWorld().equals(world)) {
+                    people.sendMessage(voteSuccessfulMessage);
+                }
+            }
+            this.world.setTime(timeDay);
             resetVote();
-        }else{
+        } else {
             progressbar.setProgress(yesVote / voteThreshold);
             progressbar.setTitle("Yes: " + yesVote + " No: " + noVote);
         }
@@ -72,18 +87,28 @@ public class TimeHandler{
         yesVote = 0;
         noVote = 0;
         voteThreshold = 0;
-        progressbar.setVisible(false);
+        progressbar.setTitle("PENIS!");
+        for (Player people : Bukkit.getOnlinePlayers()) {  //Loops threw all player
+            if (people.getWorld() == world) {             //Checks if they are in the same world as the vote
+                progressbar.removePlayer(people);          //Removes them from the progressbar
+            }
+        }
+        progressbar.removeAll();
         playerVotes.clear();
     }
 
-    private void startVote(){
+    private void startVote() {
         voteActive = true;
-        int onlinePlayer = Bukkit.getOnlinePlayers().size();
+        int onlinePlayer = Bukkit.getOnlinePlayers().size();        //TODO Remove after Debugging
         System.out.println(onlinePlayer);
 
-        voteThreshold = (int) (onlinePlayer / 2f);
+        voteThreshold = onlinePlayer / 2f;
 
-        Bukkit.broadcastMessage("A Vote has been started!");
+        for (Player people : Bukkit.getOnlinePlayers()) {
+            if (people.getWorld().equals(world)) {
+                people.sendMessage(voteStartMessage);
+            }
+        }
     }
 
     public Boolean getVoteActive() {
