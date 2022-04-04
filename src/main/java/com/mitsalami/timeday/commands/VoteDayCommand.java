@@ -12,14 +12,20 @@ public class VoteDayCommand extends TimeHandler implements CommandExecutor {
     private TimeHandler timeHandler;
 
     String voteInOtherWorld = TimeDay.getPlugin().getConfig().getString("voteInOtherWorld");
+    String alreadyVoted = TimeDay.getPlugin().getConfig().getString("alreadyVoted");
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(getWorld() == player.getWorld() || getWorld() == null) {
-                timeHandler.playerStartedVote(true, player.getWorld(), player);
-            }else{
+            if (getWorld() == player.getWorld() || getWorld() == null) {
+                if (timeHandler.playerVotes.contains(player)) {
+                    player.sendMessage(alreadyVoted);
+                } else {
+
+                    timeHandler.playerStartedVote(true, player.getWorld(), player);
+                }
+            } else {
                 player.sendMessage(voteInOtherWorld);
             }
         }
