@@ -14,7 +14,7 @@ public final class TimeDay extends JavaPlugin {
         // Plugin startup logic
 
         plugin = this;
-        TimeHandler timeHandler = new TimeHandler();
+        TimeHandler timeHandler = new TimeHandler(plugin);
 
         //Register Commands
         this.getCommand("voteDay").setExecutor(new VoteDayCommand(timeHandler));

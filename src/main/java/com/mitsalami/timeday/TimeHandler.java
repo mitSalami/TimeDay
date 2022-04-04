@@ -7,6 +7,8 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -27,6 +29,15 @@ public class TimeHandler {
     public HashSet<Player> playerVotes = new HashSet<Player>();
     private World world;
      BossBar progressbar = Bukkit.createBossBar("VoteProgress", BarColor.BLUE, BarStyle.SEGMENTED_10);
+     private Plugin plugin;
+
+    public TimeHandler(Plugin plugin) {
+        this.plugin = plugin;
+    }
+
+    public TimeHandler(){
+
+    }
 
     public World getWorld() {
         return this.world;
@@ -50,9 +61,7 @@ public class TimeHandler {
             playerVotes.add(p);
             checkVote();
         } else {
-            this.world = world;
-            yesVote++;
-            checkVote();
+            return;
         }
     }
 
@@ -86,7 +95,6 @@ public class TimeHandler {
     }
 
     private void resetVote() {
-        voteActive = false;
         yesVote = 0;
         noVote = 0;
         voteThreshold = 0;
@@ -98,6 +106,16 @@ public class TimeHandler {
         }
         progressbar.removeAll();
         playerVotes.clear();
+        resetActiveVote();
+    }
+
+    private void resetActiveVote() {
+        new BukkitRunnable(){
+            @Override
+            public void run(){
+                voteActive = false;
+            }
+        }.runTaskLater(plugin, 20L * 30L);      //runs task later, 1 second = 20 ticks
     }
 
     private void startVote() {
