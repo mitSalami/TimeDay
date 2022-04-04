@@ -1,6 +1,5 @@
 package com.mitsalami.timeday;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
 import java.util.HashSet;
 
 public class TimeHandler {
