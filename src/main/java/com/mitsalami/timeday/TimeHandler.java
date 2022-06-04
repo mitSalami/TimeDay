@@ -96,7 +96,6 @@ public class TimeHandler {
         yesVote = 0;
         noVote = 0;
         voteThreshold = 0;
-        progressbar.setTitle("PENIS!");
         for (Player people : Bukkit.getOnlinePlayers()) {  //Loops threw all player
             if (people.getWorld() == world) {             //Checks if they are in the same world as the vote
                 progressbar.removePlayer(people);          //Removes them from the progressbar
@@ -104,16 +103,7 @@ public class TimeHandler {
         }
         progressbar.removeAll();
         playerVotes.clear();
-        resetActiveVote();
-    }
-
-    private void resetActiveVote() {
-        new BukkitRunnable(){
-            @Override
-            public void run(){
-                voteActive = false;
-            }
-        }.runTaskLater(plugin, 20L * 30L);      //runs task later, 1 second = 20 ticks
+        voteActive = false;
     }
 
     private void startVote() {
